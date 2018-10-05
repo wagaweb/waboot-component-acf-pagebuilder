@@ -1,4 +1,13 @@
 <?php
+if(isset($pageBuilderPostId)){
+    global $post;
+    if($post instanceof \WP_Post && $post->ID !== $pageBuilderPostId){
+	    $oldGlobalPost = $post;
+	    $post = get_post($pageBuilderPostId);
+	    setup_postdata($pageBuilderPostId);
+	    $mustResetPostDataFlag = true;
+    }
+}
 if( function_exists('get_field') && have_rows('wb_sections') ):
 
     while ( have_rows('wb_sections') ) : the_row();
@@ -210,3 +219,9 @@ if( function_exists('get_field') && have_rows('wb_sections') ):
     <?php endwhile;
 
 endif;
+if(isset($pageBuilderPostId)){
+    if(isset($mustResetPostDataFlag) && $mustResetPostDataFlag){
+	    $post = $oldGlobalPost;
+	    wp_reset_postdata();
+    }
+}

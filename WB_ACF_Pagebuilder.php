@@ -236,7 +236,9 @@ class WB_ACF_Pagebuilder extends \WBF\modules\components\Component{
 
 	    try{
 	        $v = new \WBF\components\mvc\HTMLView($this->directory.'/views/pagebuilder.php',null,false);
-	        $pbContent = $v->get();
+	        $pbContent = $v->get([
+	        	'pageBuilderPostId' => $postId
+	        ]);
 	        return $pbContent;
 	    }catch (\Exception $e){
 	    	return '';
