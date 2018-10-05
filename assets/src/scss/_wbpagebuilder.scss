@@ -9,6 +9,12 @@
 }
 */
 
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none;
+  }
+}
+
 .wbpagebuilder__section {
   .wbrow {
     display: flex;
@@ -94,23 +100,23 @@
 
   @media (min-width:767px) {
 
-    .wb-gallery--cols1 > div {
+    &.wb-gallery--cols1 > div {
       flex-basis: 100%;
       max-width: 100%;
     }
-    .wb-gallery--cols2 > div {
+    &.wb-gallery--cols2 > div {
       flex-basis: 50%;
       max-width: 50%;
     }
-    .wb-gallery--cols3 > div {
+    &.wb-gallery--cols3 > div {
       flex-basis: 33.33333%;
       max-width: 33.33333%;
     }
-    .wb-gallery--cols4 > div {
+    &.wb-gallery--cols4 > div {
       flex-basis: 25%;
       max-width: 25%;
     }
-    .wb-gallery--cols5 > div {
+    &.wb-gallery--cols5 > div {
       flex-basis: 20%;
       max-width: 20%;
     }
@@ -171,6 +177,9 @@
 /* Tabs */
 
 .wb-tabs__list {
+  @media (max-width: 767px) {
+    display: none;
+  }
   list-style-type: none;
   padding: 0;
   li,
@@ -179,7 +188,8 @@
   }
 }
 
-@media (min-width: 767px) {
+
+@media (min-width: 768px) {
   .wb-tab__inner {
     display: flex;
     align-items: center;
@@ -191,9 +201,7 @@
   .wb-tabs--horizontal .wb-tabs__list li {
     display: inline-block;
   }
-}
 
-@media (min-width: 767px) {
   .wb-tabs--vertical {
     display: flex;
     .wb-tabs__list {

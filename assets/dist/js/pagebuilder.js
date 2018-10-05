@@ -6,40 +6,7 @@ jQuery(document).ready(function($) {
 
         initParallax();
 
-        //inView('.rellax').on('enter', function(){
-
-
-/*
-            let rellax = new Rellax('.rellax', {
-                //center: true
-                wrapper: '.rellax-wrap',
-                callback: function(positions) {
-                    console.log(positions);
-                }
-            });
-
-            $(".rellax-txt").each(function() {
-                let rellaxHeight = $(this).outerHeight();
-                $(this).closest('.rellax-wrap').height(rellaxHeight);
-            });
-*/
-
-
-            /*
-            var rellax = new Rellax('.rellax', {
-                //center: true,
-                callback: function(positions) {
-                    console.log(positions);
-                }
-            });
-            $(".rellax-txt").each(function() {
-                var rellaxHeight = $(this).outerHeight();
-                $(this).closest('.rellax-wrap').height(rellaxHeight);
-            });
-            */
-       //});
     }
-
 
 
     // Masonry Init
@@ -81,12 +48,27 @@ jQuery(document).ready(function($) {
 
     // Tabs Init
     if($('.wb-tabs').length > 0) {
-        var $tabs = $('.wb-tabs');
-        for (var tab of $tabs) {
-            var $tab = $(tab);
-            $tab.tabs();
+
+        if (window.matchMedia('(min-width: 768px)').matches) {
+            var $tabs = $('.wb-tabs');
+            for (var tab of $tabs) {
+                var $tab = $(tab);
+                $tab.tabs();
+            }
         }
+
+        if (window.matchMedia('(max-width: 767px)').matches) {
+            $('.wb-tabs__wrapper').addClass('owl-carousel').owlCarousel({
+                items: 1,
+                nav:false,
+                dots:true,
+                //navText: ['<i class="fas fa-angle-left"></i>', '<i class="fas fa-angle-right"></i>'],
+                autoHeight: true
+            });
+        }
+
     }
+
 
 
     // Accordion Init
@@ -96,7 +78,8 @@ jQuery(document).ready(function($) {
             var $accordionSection = $(accordionSection);
             $accordionSection.accordion({
                 collapsible: true,
-                active: false
+                active: false,
+                heightStyle: "content"
             });
         }
     }

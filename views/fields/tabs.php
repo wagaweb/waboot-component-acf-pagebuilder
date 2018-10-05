@@ -17,6 +17,8 @@
 
                 <div class="wb-tab__inner">
 
+                    <h3 class="mobile-only"><?php echo $tab['wb_block_tab_label'] ?></h3>
+
                     <div class="wb-tab__text">
                         <?php echo $tab['wb_block_tab_text'] ?>
                     </div>
