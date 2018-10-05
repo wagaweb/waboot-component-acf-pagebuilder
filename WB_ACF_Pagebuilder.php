@@ -15,13 +15,12 @@ use \WBF\components\assets\AssetsManager;
 
 class WB_ACF_Pagebuilder extends \WBF\modules\components\Component{
 	public function setup(){
-		// Hooks
 		add_action('enqueue_scripts', [$this, 'styles'], 10, 1);
-		add_action('admin_enqueue_scripts', [$this, 'adminstyles'], 10, 1);
-		add_action('admin_enqueue_scripts', [$this, 'adminjavascript'], 10, 1);
+		add_action('admin_enqueue_scripts', [$this, 'adminStyles'], 10, 1);
+		add_action('admin_enqueue_scripts', [$this, 'adminScript'], 10, 1);
 		add_action('acf/save_post', [$this,'cleanEmptyAcfValues'],1);
-		add_filter('the_content',[$this,'render_pagebuilder_content']);
-		$this->register_page_builder_fields();
+		add_filter('the_content',[$this,'renderPageBuilderOnPostContent']);
+		$this->registerPageBuilderFields();
 	}
 
 	/**
@@ -97,7 +96,7 @@ class WB_ACF_Pagebuilder extends \WBF\modules\components\Component{
      * Enqueue our styles to admin
      * @throws Exception
      */
-    public function adminstyles(){
+    public function adminStyles(){
         $styles = [
             'admin_css' => [
                 'uri' => $this->directory_uri . '/assets/dist/css/admin.css',
@@ -113,7 +112,7 @@ class WB_ACF_Pagebuilder extends \WBF\modules\components\Component{
      * Enqueue our javascript to admin
      * @throws Exception
      */
-    public function adminjavascript(){
+    public function adminScript(){
         $scripts = [
             'admin_js' => [
                 'uri' => $this->directory_uri . '/assets/dist/js/admin-js.js',
@@ -159,7 +158,7 @@ class WB_ACF_Pagebuilder extends \WBF\modules\components\Component{
     /**
      * Register ACF fields for the page builder
      */
-    public function register_page_builder_fields(){
+    public function registerPageBuilderFields(){
         $allowedPostTypes = \Waboot\functions\get_option($this->name.'_allowed_post_types',[]);
 
         if(!is_array($allowedPostTypes)){
@@ -186,7 +185,7 @@ class WB_ACF_Pagebuilder extends \WBF\modules\components\Component{
     }
 
     /**
-     * Renders the page builder HTML
+     * Renders the page builder HTML inside the post content
      *
      * @hooked 'the_content'
      *
@@ -194,18 +193,74 @@ class WB_ACF_Pagebuilder extends \WBF\modules\components\Component{
      * @return string
      * @throws Exception
      */
-    public function render_pagebuilder_content($content){
+    public function renderPageBuilderOnPostContent($content){
         global $post;
 
-        $postType = get_post_type($post);
-        if(!$this->postTypeCanHavePageBuilder($postType)) return $content;
+        if(!$post instanceof \WP_Post){
+        	return $content;
+        }
+
+        $pbContent = $this->getPageBuilderHtml($post->ID);
+
+        if($pbContent === ''){
+        	return $content;
+        }
 
 	    $canAppendPageBuilder = true;
-	    if(!$canAppendPageBuilder) return $content;
-	    $v = new \WBF\components\mvc\HTMLView($this->directory.'/views/pagebuilder.php',null,false);
-	    $pbContent = $v->get();
-	    $content = $content.$pbContent;
+	    if(!$canAppendPageBuilder){
+	    	return $content;
+	    }
+
+	    $content .= $pbContent;
+
 	    return $content;
+    }
+
+	/**
+	 * Get the PageBuilder HTML
+	 *
+	 * @param $postId
+	 *
+	 * @return string
+	 */
+    public function getPageBuilderHtml($postId){
+    	$post = get_post($postId);
+    	if(!$post instanceof \WP_Post){
+		    return '';
+	    }
+
+	    $postType = get_post_type($post);
+	    if(!$this->postTypeCanHavePageBuilder($postType)){
+		    return '';
+	    }
+
+	    try{
+	        $v = new \WBF\components\mvc\HTMLView($this->directory.'/views/pagebuilder.php',null,false);
+	        $pbContent = $v->get();
+	        return $pbContent;
+	    }catch (\Exception $e){
+	    	return '';
+	    }
+    }
+
+	/**
+	 * Get the PageBuilder HTML from a $postId
+	 *
+	 * @param $postId
+	 *
+	 * @return string
+	 */
+    public static function getPageBuilderHtmlFromPostId($postId){
+	    $components = \WBF\modules\components\ComponentsManager::getAllComponents();
+	    if(!isset($components['wb_acf_pagebuilder'])){
+	    	return '';
+	    }
+	    $pbInstance = $components['wb_acf_pagebuilder'];
+	    if(!$pbInstance instanceof self ){
+	    	return '';
+	    }
+	    $pbContent = $pbInstance->getPageBuilderHtml($postId);
+	    return $pbContent;
     }
 
     /**
