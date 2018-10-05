@@ -82,8 +82,8 @@ class WB_ACF_Pagebuilder extends \WBF\modules\components\Component{
 	public function styles(){
         $styles = [
             'wbpagebuilder_css' => [
-                'uri' => $this->directory_uri . '/assets/dist/css/wbpagebuilder.css',
-                'path' => $this->directory . '/assets/dist/css/wbpagebuilder.css',
+                'uri' => $this->directory_uri . '/assets/dist/css/wbpagebuilder.min.css',
+                'path' => $this->directory . '/assets/dist/css/wbpagebuilder.min.css',
                 'deps' => ['owlcarousel-css'],
             ]
         ];
@@ -99,8 +99,8 @@ class WB_ACF_Pagebuilder extends \WBF\modules\components\Component{
     public function adminStyles(){
         $styles = [
             'admin_css' => [
-                'uri' => $this->directory_uri . '/assets/dist/css/admin.css',
-                'path' => $this->directory . '/assets/dist/css/admin.css',
+                'uri' => $this->directory_uri . '/assets/dist/css/admin.min.css',
+                'path' => $this->directory . '/assets/dist/css/admin.min.css',
             ],
         ];
 
