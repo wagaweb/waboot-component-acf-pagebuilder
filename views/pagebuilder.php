@@ -36,7 +36,7 @@ if( function_exists('get_field') && have_rows('wb_sections') ):
         if($sectionBgColor != '' || $sectionBgImage != '' ) { $sectionCssProperty = $sectionCssProperty . '"'; };
         ?>
 
-        <section class="wbpagebuilder__section <?php if($sectionId != ''){ echo $sectionId; } ?><?php if($sectionBgParallax){ echo ' parallax-wrap'; } ?>" <?php if($sectionCssProperty != ''){ echo $sectionCssProperty; } ?><?php if($sectionBgParallax){ echo ' data-speed="1"'; } ?>>
+        <section class="wbpagebuilder__section <?php if($sectionId != ''){ echo $sectionId; } ?><?php if($sectionBgParallax && !wb_is_mobile()){ echo ' parallax-wrap'; } ?>" <?php if($sectionCssProperty != ''){ echo $sectionCssProperty; } ?><?php if($sectionBgParallax && !wb_is_mobile()){ echo ' data-speed="1"'; } ?>>
 
         <div class="<?php echo $sectionWidth; ?>">
 

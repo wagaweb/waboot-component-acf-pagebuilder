@@ -16,6 +16,16 @@
 }
 
 .wbpagebuilder__section {
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  &.parallax-wrap {
+    background-size: cover;
+    background-color: transparent;
+    background-position: center 0;
+    background-attachment: fixed;
+  }
+
   .wbrow {
     display: flex;
     .wbcol {
@@ -72,14 +82,6 @@
     }
   }
 
-}
-
-.parallax-wrap {
-  background-repeat: no-repeat;
-  background-color: transparent;
-  background-position: center 0;
-  background-attachment: fixed;
-  background-size: cover;
 }
 
 
