@@ -60,9 +60,9 @@ jQuery(document).ready(function($) {
         if (window.matchMedia('(max-width: 767px)').matches) {
             $('.wb-tabs__wrapper').addClass('owl-carousel').owlCarousel({
                 items: 1,
-                nav:false,
+                nav:true,
                 dots:true,
-                //navText: ['<i class="fas fa-angle-left"></i>', '<i class="fas fa-angle-right"></i>'],
+                navText: ['<i class="fas fa-angle-left"></i>', '<i class="fas fa-angle-right"></i>'],
                 autoHeight: true
             });
         }
